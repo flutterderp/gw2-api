@@ -1,0 +1,11 @@
+* { margin: 0; padding: 0; }
+body { background-color: #fff; color: #333; font-family: 'Roboto', Helvetica, Arial, sans-serif; font-size: 16px; text-align: left; }
+p { line-height: 1.125rem; margin: 0.3125rem 0; }
+pre { background-color: #eee; border: 0.0625rem solid #333; color: inherit; font-family: 'Source Code Pro', monospace; margin: 0.3125rem 0; padding: 0.3125rem; }
+small { font-size: 0.8rem; }
+ul { margin: 0 auto; width: 95%; }
+li { padding: 0.3125rem 0; }
+
+.clr { clear: both; }
+
+#wrapper { margin: 0.3125rem auto; width: 61.25rem; }
