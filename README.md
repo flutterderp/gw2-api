@@ -1,1 +1,1 @@
-# gw2-api
+# GW2 API

@@ -1,22 +1,26 @@
 <?php
 /**
- * @Name GW2 API Test
- * @Author Flutterderp
- * @Version 0.5.0
+ * @name GW2 API Test
+ * @author flutterderp
+ * @version 0.5.1
  * 
- * @Todo
+ * @todo
  */
 date_default_timezone_set('UTC');
 
 class GW2
 {
 	protected $api_key;
-	//protected $user_name;
 	protected $base_url;
 	protected $ch;
 	protected $base_dir;
 	protected $cache_time;
 	
+	/**
+	 * GW2 constructor
+	 * 
+	 * @param string $authkey An optional API key used for accessing authenticated endpoints
+	 */
 	function __construct($authkey = '')
 	{
 		$this->base_dir		= __DIR__ . '/json_files/';
@@ -24,7 +28,6 @@ class GW2
 		$this->cache_time	= 5 * 60;
 		$this->ch					= curl_init();
 		$headers					= array();
-		//$headers[]				= 'Content-length: 0';
 		$headers[]				= 'Content-type: application/json';
 		if($authkey)
 		{
@@ -42,6 +45,19 @@ class GW2
 	function __destruct()
 	{
 		curl_close($this->ch);
+	}
+	
+	/**
+	 * Method to save response data to a JSON file
+	 *
+	 * @param string $file file name to save to
+	 * @param string $data JSON-encoded response string
+	 *
+	 * @todo 
+	 */
+	protected function makeCacheFile($file, $data)
+	{
+		// Do stuff
 	}
 	
 	function accountDetails()
@@ -119,38 +135,19 @@ class GW2
 			@touch($cache_file, time());
 		}
 		
-		return json_decode($response, true);
-	}
-	
-	// Old stuff past this comment :(
-	/*function getWorldList()
-	{
-		curl_setopt($this->ch, CURLOPT_URL, $this->base_url . 'world_names.json?lang=en');
-		$response = curl_exec($this->ch);
-		$response = json_decode($response);
-		//curl_close($this->ch);
+		$response = json_decode($response, true);
 		
-		$worlds = array();
-		foreach($response as $world)
+		if($response['age'])
 		{
-			$worlds[$world->id] = $world->name;
+			$age									= array('h' => 0, 'm' => 0, 's' => 0);
+			$age['h']							= floor($response['age'] / 3600);
+			$age['m']							= floor(($response['age'] / 60) % 60);
+			$age['s']							= floor($response['age'] % 60);
+			$response['name_me']	= $age;
 		}
 		
-		natcasesort($worlds);
-		return $worlds;
+		return $response;
+		// return json_decode($response, true);
 	}
 	
-	function getEvent($event_id = '')
-	{
-		//curl_setopt($this->ch, CURLOPT_URL, $this->baseurl . 'event_details.json?event_id=' . $event_id);
-	}
-	
-	function getEvents($world_id = '1011')
-	{
-		curl_setopt($this->ch, CURLOPT_URL, $this->base_url . 'events.json?world_id=' . $world_id);
-		$response	= curl_exec($this->ch);
-		$events		= json_decode($response);
-		//curl_close($this->ch);
-		return $events;
-	}*/
 }

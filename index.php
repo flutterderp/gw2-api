@@ -1,5 +1,5 @@
 <?php
-// ini_set('display_errors', 'On');
+ini_set('display_errors', 'On');
 require_once('class.gw.php');
 ?>
 
@@ -39,16 +39,12 @@ require_once('class.gw.php');
 							echo '<small>&ndash; ' . $details['text'] . '</small>';
 						else
 						{
-							$age			= array('h' => 0, 'm' => 0, 's' => 0);
-							$age['h']	= floor($details['age'] / 3600);
-							$age['m']	= floor(($details['age'] / 60) % 60);
-							$age['s']	= floor($details['age'] % 60);
 							?>
 							<br>
 							<small>
 								Level <?php echo $details['level'] . ' ' .$details['gender'] . ' ' . $details['race'] . ' ' . $details['profession']; ?>
 								<br>Created: <?php echo date('Y-m-d H:i', strtotime($details['created'])); ?>
-								<br>Played for: <?php echo $age['h'] . 'h ' . $age['m'] . 'm ' . $age['s'] . 's'; ?>
+								<br>Played for: <?php echo $details['name_me']['h'] . 'h ' . $details['name_me']['m'] . 'm ' . $details['name_me']['s'] . 's'; ?>
 								<br>Deaths: <?php echo $details['deaths']; ?>
 							</small>
 							
@@ -60,7 +56,8 @@ require_once('class.gw.php');
 					<?php
 				}
 				echo '</ul>';
-				// echo '<pre>'; print_r($gw2->accountDetails()); echo '</pre>';
+				// echo '<pre>'; print_r($acc_info); echo '</pre>';
+				// echo '<pre>'; print_r($gw2->charInfo('')); echo '</pre>';
 			}
 			?>
 		</div>
