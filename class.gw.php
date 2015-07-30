@@ -12,6 +12,7 @@ class GW2
 {
 	protected $api_key;
 	protected $base_url;
+	protected $api_version;
 	protected $ch;
 	protected $base_dir;
 	protected $cache_time;
@@ -137,6 +138,7 @@ class GW2
 		
 		$response = json_decode($response, true);
 		
+		// Calculate age values
 		if($response['age'])
 		{
 			$age									= array('h' => 0, 'm' => 0, 's' => 0);
@@ -146,6 +148,39 @@ class GW2
 			$response['name_me']	= $age;
 		}
 		
+		// Fetch name of currently represented guild
+		if($response['guild'])
+		{
+			$tmp										= $this->guildInfo($response['guild']);
+			$response['guild_name']	= $tmp['guild_name'];
+			$response['guild_tag']	= $tmp['tag'];
+		}
+		
+		return $response;
+		// return json_decode($response, true);
+	}
+	
+	function guildInfo($guild_id = '')
+	{
+		$guild_id		= rawurlencode($guild_id);
+		$cache_file		= $this->base_dir . $guild_id . '.json';
+		$fetch_cache	= @file_get_contents($cache_file);
+		
+		if(($fetch_cache !== false) && ((filemtime($cache_file) + $this->cache_time) > time()))
+		{
+			// Use our cached results
+			$response = $fetch_cache;
+		}
+		else
+		{
+			// Write to a JSON file
+			curl_setopt($this->ch, CURLOPT_URL, str_ireplace('/v2/', '/v1/', $this->base_url) . 'guild_details?guild_id=' . $guild_id . '&lang=en');
+			$response = curl_exec($this->ch);
+			@file_put_contents($cache_file, $response);
+			@touch($cache_file, time());
+		}
+		
+		$response = json_decode($response, true);
 		return $response;
 		// return json_decode($response, true);
 	}
