@@ -15,9 +15,9 @@ require_once('class.gw.php');
 		<div id="wrapper">
 			<h1>Guild Wars 2 API Test</h1>
 			<?php
-			$gw2			= new GW2($authkey = '');
-			$acc_info	= $gw2->accountDetails();
-			$chars		= $gw2->getCharacters();
+			$gw2      = new GW2($authkey = '');
+			$acc_info = $gw2->accountDetails();
+			$chars    = $gw2->getCharacters();
 			if(isset($chars['text']))
 			{
 				echo '<p>Error: ' . ucfirst($chars['text']) . '</p>';
@@ -61,11 +61,11 @@ require_once('class.gw.php');
 								}
 								?>
 							</small>
-							
+
 							<?php
 						}
 						?>
-							
+
 					</li>
 					<?php
 				}
